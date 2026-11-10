@@ -1,1 +1,0 @@
-Put click.mp3, slide.mp3 and release.mp3 in this folder.
