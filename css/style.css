@@ -624,3 +624,114 @@ text-align: center;
 .overlay.lens-holding .yellow-box::after {
   border-top-color: #0B2027 !important;
 }
+
+
+/* BLY fictional demo identification screen */
+#blyDemoAuth { position:absolute; inset:0; z-index:30; background:#092127; color:#fff; display:none; flex-direction:column; overflow:hidden; }
+#blyDemoAuth.open { display:flex; }
+#blyDemoAuth [hidden] { display:none !important; }
+.demo-auth-header { height:100px; flex:none; background:#1b4050; display:flex; align-items:center; justify-content:center; position:relative; font-size:19px; font-weight:600; padding-top:18px; }
+.demo-auth-header button { position:absolute; left:15px; top:39px; border:1px solid #326278; background:#0c2935; border-radius:25px; padding:10px 15px; color:#b3c4cd; font-size:17px; }
+.demo-auth-header small { position:absolute; right:13px; top:12px; font-size:10px; letter-spacing:.08em; color:#c2e6ec; }
+.demo-auth-main { padding:24px 20px; font-size:20px; line-height:1.55; }
+.demo-auth-name { margin-bottom:8px; }
+.demo-auth-target { font-size:25px; font-weight:700; margin:6px 0 17px; }
+.demo-auth-main hr { border:0; border-top:1px solid #b7c8cf; margin:0 0 19px; }
+.demo-auth-disclaimer { color:#a4c0cb; font-size:12px; margin-top:24px; }
+.demo-auth-bottom { margin-top:auto; padding:0 16px 35px; }
+.demo-auth-bottom button { width:100%; border:0; border-radius:3px; padding:19px 8px; background:#82c5df; color:#08242d; font-size:17px; }
+.demo-auth-keypad-area { margin-top:auto; background:#1b4050; }
+.demo-auth-code { margin:8px; background:#050505; border:1px solid #9db1bc; border-radius:6px; height:48px; display:flex; align-items:center; padding:0 10px; color:#aeb9c1; font-size:20px; letter-spacing:.1em; }
+.demo-auth-grid { display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(4, minmax(55px, 1fr)); height:min(40svh,300px); }
+.demo-auth-grid button { background:#1b4050; color:#e7e8e9; border:1px solid #42616e; font-size:34px; font-weight:300; }
+.demo-auth-grid button small { font-size:12px; }
+.demo-auth-grid #demoAuthSubmit { font-size:15px; }
+.demo-auth-grid #demoAuthSubmit:disabled { opacity:.4; }
+#demoAuthError { min-height:20px; text-align:center; color:#ffd3d3; margin:5px; font-size:13px; }
+
+/* Identification screen enters from the right */
+#blyDemoAuth {
+  display: flex;
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 340ms cubic-bezier(.22, 1, .36, 1), visibility 0s linear 340ms;
+  will-change: transform;
+}
+#blyDemoAuth.open {
+  display: flex;
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform 340ms cubic-bezier(.22, 1, .36, 1), visibility 0s;
+}
+/* Keypad rises into view */
+.demo-auth-keypad-area {
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 350ms cubic-bezier(.22, 1, .36, 1), opacity 260ms ease;
+  will-change: transform;
+}
+.demo-auth-keypad-area.keypad-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+/* Shift the digit 1 left, without shifting its grid cell */
+.demo-auth-grid button[data-digit="1"] {
+  text-indent: -24px;
+}
+@media (prefers-reduced-motion: reduce) {
+  #blyDemoAuth, #blyDemoAuth.open, .demo-auth-keypad-area {
+    transition: none;
+  }
+}
+.home-logo-image {
+  display: block;
+  width: 260px;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(-80px);
+}
+
+.verification-logo {
+  display: block;
+  width: 60px;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(22px);
+}
+
+/* FIX: Identification keypad buttons */
+.demo-auth-grid button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  text-align: center;
+  text-indent: 0 !important;
+  line-height: 1;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.demo-auth-grid button small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* FIX: Smaller security code box */
+.demo-auth-code {
+  height: 36px;
+  margin: 8px 12px;
+  padding: 0 10px;
+  font-size: 16px;
+  flex: none;
+}
