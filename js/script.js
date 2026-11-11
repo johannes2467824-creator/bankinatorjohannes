@@ -36,13 +36,13 @@ function showToast(message) {
 }
 
 document.getElementById('openId').addEventListener('click', () => {
-  overlay.classList.add('open');
-  prepareScreenCapture();
+  openDemoAuth();
 });
 
 function closeCard() {
   stopPixelation();
   overlay.classList.remove('open');
+  closeDemoAuth();
 }
 
 document.getElementById('closeId').addEventListener('click', closeCard);
@@ -459,7 +459,7 @@ function generateRandomCode() {
     byte.toString(16).padStart(2, "0")
   ).join("").toUpperCase();
 
-  return "BLY-DEMO-" + randomCode;
+  return "https://johannes2467824-creator.github.io/verification/?code=" + randomCode;
 }
 
 const qrGenerator = new QRCode(qrContainer, {
@@ -545,4 +545,88 @@ setInterval(() => {
   });
 
   checkOverlay();
+})();
+
+
+/* BLY DEMO AUTH FLOW — fictional UI; not a real identity service */
+(() => {
+  const panel = document.createElement('section');
+  panel.id = 'blyDemoAuth';
+  panel.setAttribute('aria-label', 'BLY Demo identifiering');
+  panel.innerHTML = `
+    <header class="demo-auth-header">
+  <button type="button" id="demoAuthCancel">Avbryt</button>
+  <span>IDENTIFIERING</span>
+  <small>
+    <img src="assets/images/verification-logo.png" class="verification-logo" alt="BLY">
+  </small>
+    </header>
+    <div class="demo-auth-main">
+      <div class="demo-auth-name">Johannes Young</div>
+      <div class="demo-auth-subtitle">Jag identifierar mig hos:</div>
+      <div class="demo-auth-target">BankID-kort</div>
+      <hr>
+      <div class="demo-auth-purpose">Min avsikt:<br>Visa ID-kort.</div>
+    </div>
+    <div class="demo-auth-bottom" id="demoAuthStart">
+      <button type="button" id="demoAuthStartButton">Identifiera med säkerhetskod</button>
+    </div>
+    <div class="demo-auth-keypad-area" id="demoAuthKeypadArea" hidden>
+      <div class="demo-auth-code"><span id="demoAuthCodeDots">Säkerhetskod</span></div>
+      <div class="demo-auth-grid">
+        <button data-digit="1">1</button><button data-digit="2">2 <small>ABC</small></button><button data-digit="3">3 <small>DEF</small></button>
+        <button data-digit="4">4 <small>GHI</small></button><button data-digit="5">5 <small>JKL</small></button><button data-digit="6">6 <small>MNO</small></button>
+        <button data-digit="7">7 <small>PQRS</small></button><button data-digit="8">8 <small>TUV</small></button><button data-digit="9">9 <small>WXYZ</small></button>
+        <button id="demoAuthBackspace" aria-label="Radera">⌫</button><button data-digit="0">0</button><button id="demoAuthSubmit" disabled>Identifiera</button>
+      </div>
+      <p id="demoAuthError" role="status"></p>
+    </div>`;
+  document.getElementById('phoneScreen').appendChild(panel);
+  const start = panel.querySelector('#demoAuthStart');
+  const keypad = panel.querySelector('#demoAuthKeypadArea');
+  const dots = panel.querySelector('#demoAuthCodeDots');
+  const submit = panel.querySelector('#demoAuthSubmit');
+  const error = panel.querySelector('#demoAuthError');
+  let code = '';
+  function update() {
+    dots.textContent = code ? '*'.repeat(code.length) : 'Säkerhetskod';
+    submit.disabled = code.length !== 6;
+    error.textContent = '';
+  }
+  function close() { panel.classList.remove('open'); keypad.classList.remove('keypad-visible'); code = ''; update(); }
+  window.openDemoAuth = () => {
+    code = ''; update();
+    keypad.classList.remove('keypad-visible'); keypad.hidden = true; start.hidden = false;
+    panel.classList.add('open');
+  };
+  window.closeDemoAuth = close;
+  panel.querySelector('#demoAuthCancel').addEventListener('click', close);
+  panel.querySelector('#demoAuthStartButton').addEventListener('click', () => {
+    start.hidden = true; keypad.hidden = false;
+    requestAnimationFrame(() => requestAnimationFrame(() => keypad.classList.add('keypad-visible')));
+  });
+  panel.querySelectorAll('[data-digit]').forEach(button => button.addEventListener('click', () => {
+    if (code.length < 6) code += button.dataset.digit;
+    update();
+  }));
+  panel.querySelector('#demoAuthBackspace').addEventListener('click', () => {
+    code = code.slice(0, -1); update();
+  });
+  function accept() {
+    if (code !== '100413') {
+      error.textContent = 'Försök igen';
+      code = ''; dots.textContent = 'Säkerhetskod'; submit.disabled = true;
+      return;
+    }
+    close();
+    overlay.classList.add('open');
+    prepareScreenCapture();
+  }
+  submit.addEventListener('click', accept);
+  document.addEventListener('keydown', event => {
+    if (!panel.classList.contains('open') || keypad.hidden) return;
+    if (/^[0-9]$/.test(event.key)) { if (code.length < 6) code += event.key; update(); }
+    if (event.key === 'Backspace') { code = code.slice(0,-1); update(); }
+    if (event.key === 'Enter' && code.length === 6) accept();
+  });
 })();
