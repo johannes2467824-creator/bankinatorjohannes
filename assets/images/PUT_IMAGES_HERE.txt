@@ -1,1 +1,0 @@
-Put bly-logo.png and portrait.png in this folder.
