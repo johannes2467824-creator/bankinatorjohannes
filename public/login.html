@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09141f">
+  <title>BLY | Logga in</title>
+  <link rel="stylesheet" href="/auth.css">
+  <script src="/auth.js" defer></script>
+</head>
+<body>
+
+  <main class="auth-card">
+
+    <div class="logo">BLY<span>.</span></div>
+
+    <p class="subtitle">Välkommen till BLY Demo</p>
+
+    <div class="tabs">
+      <button id="loginTab" class="active" type="button">
+        Logga in
+      </button>
+
+      <button id="registerTab" type="button">
+        Skapa konto
+      </button>
+    </div>
+
+    <h1 id="formTitle">Logga in</h1>
+
+    <p class="description" id="formDescription">
+      Logga in för att fortsätta till BLY Demo.
+    </p>
+
+    <form id="authForm">
+
+      <label for="email">E-postadress</label>
+      <input
+        id="email"
+        type="email"
+        autocomplete="email"
+        placeholder="namn@exempel.se"
+        required>
+
+      <label for="password">Lösenord</label>
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="Ange ditt lösenord"
+        required>
+
+      <div id="licenseGroup" hidden>
+        <label for="licenseKey">Licensnyckel</label>
+
+        <input
+          id="licenseKey"
+          type="text"
+          placeholder="BLY-XXXX-XXXX-XXXX-XXXX"
+          autocomplete="off"
+          spellcheck="false">
+
+        <p class="hint">
+          En licensnyckel kan endast användas för att skapa ett konto.
+        </p>
+      </div>
+
+      <p id="authError" role="alert"></p>
+
+      <button id="submitButton" class="submit" type="submit">
+        Logga in
+      </button>
+
+    </form>
+
+    <p class="footer">BLY Demo · Kontosystem</p>
+
+  </main>
+
+</body>
+</html>
