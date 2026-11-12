@@ -1,4 +1,6 @@
 
+const API_URL = 'https://api.bankinator.online';
+
 const loginTab = document.getElementById('loginTab');
 const registerTab = document.getElementById('registerTab');
 const form = document.getElementById('authForm');
@@ -25,8 +27,8 @@ function switchMode(nextMode) {
     : 'Logga in';
 
   description.textContent = registering
-    ? 'Aktivera ditt konto med en oanvänd licensnyckel.'
-    : 'Logga in för att fortsätta till BLY Demo.';
+    ? 'Aktivera ditt konto med en giltig licensnyckel.'
+    : 'Logga in för att fortsätta till Bankinator.';
 
   submitButton.textContent = registering
     ? 'Skapa konto'
@@ -75,10 +77,10 @@ form.addEventListener('submit', async event => {
 
   try {
     const response = await fetch(
-      registering ? '/api/register' : '/api/login',
+      `${API_URL}${registering ? '/api/register' : '/api/login'}`,
       {
         method: 'POST',
-        credentials: 'same-origin',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -113,9 +115,12 @@ form.addEventListener('submit', async event => {
 
 (async () => {
   try {
-    const response = await fetch('/api/me', {
-      credentials: 'same-origin'
+    const response = await fetch(`${API_URL}/api/me`, {
+      credentials: 'include',
+      cache: 'no-store'
     });
+
+    if (!response.ok) return;
 
     const data = await response.json();
 
