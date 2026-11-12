@@ -1628,7 +1628,8 @@ setInterval(() => {
 })();
 
 
-/* BLY ACCOUNT - LOGOUT BUTTON */
+
+/* BANKINATOR ACCOUNT - LOGOUT BUTTON */
 
 (() => {
   const editor = document.getElementById('blyProfileEditor');
@@ -1659,13 +1660,18 @@ setInterval(() => {
   content.appendChild(logoutButton);
 
   logoutButton.addEventListener('click', async () => {
-    if (!confirm('Vill du logga ut från BLY?')) return;
+    if (!confirm('Vill du logga ut från Bankinator?')) return;
+
+    logoutButton.disabled = true;
 
     try {
-      const response = await fetch('/api/logout', {
-        method: 'POST',
-        credentials: 'same-origin'
-      });
+      const response = await fetch(
+        'https://api.bankinator.online/api/logout',
+        {
+          method: 'POST',
+          credentials: 'include'
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Kunde inte logga ut.');
@@ -1675,28 +1681,41 @@ setInterval(() => {
 
     } catch (error) {
       alert(error.message);
+      logoutButton.disabled = false;
     }
   });
 })();
 
 
-/* BLY ACCOUNT - SINGLE ACCOUNT PER BROWSER */
+/* BANKINATOR ACCOUNT - SESSION CHECK */
 
 (() => {
   let currentUserId = null;
+  let checking = false;
 
   async function checkCurrentAccount() {
+    if (checking) return;
+    checking = true;
+
     try {
-      const response = await fetch('/api/me', {
-        credentials: 'same-origin',
-        cache: 'no-store'
-      });
+      const response = await fetch(
+        'https://api.bankinator.online/api/me',
+        {
+          credentials: 'include',
+          cache: 'no-store'
+        }
+      );
 
       if (!response.ok) return;
 
       const data = await response.json();
 
       if (!data.loggedIn) {
+        window.location.replace('/login.html');
+        return;
+      }
+
+      if (!data.user || !data.user.id) {
         window.location.replace('/login.html');
         return;
       }
@@ -1712,6 +1731,9 @@ setInterval(() => {
 
     } catch (error) {
       console.error('Account check failed:', error);
+
+    } finally {
+      checking = false;
     }
   }
 
