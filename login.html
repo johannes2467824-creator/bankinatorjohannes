@@ -8,6 +8,46 @@
   <title>BLY | Logga in</title>
   <link rel="stylesheet" href="/auth.css">
   <script src="/auth.js" defer></script>
+
+  <style>
+    .extra-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .discord-button {
+      display: block;
+      padding: 13px 16px;
+      background: #5865f2;
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background .2s;
+    }
+
+    .discord-button:hover {
+      background: #4752c4;
+    }
+
+    .buy-license {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .buy-license a {
+      color: #68b9ff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .buy-license a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
@@ -73,6 +113,23 @@
       </button>
 
     </form>
+
+    <div class="extra-links">
+      <a
+        class="discord-button"
+        href="https://discord.gg/4cYnWuFY5"
+        target="_blank"
+        rel="noopener noreferrer">
+        Join our Discord
+      </a>
+
+      <p class="buy-license">
+        Don't have a license key?
+        <a href="NORTHSTORE_URL_HERE">
+          Buy one here!
+        </a>
+      </p>
+    </div>
 
     <p class="footer">Bankinator · Kontosystem</p>
 
