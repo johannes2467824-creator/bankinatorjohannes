@@ -1273,20 +1273,16 @@ setInterval(() => {
       const y = (canvas.height - drawHeight) / 2;
 
       // Mirror the front camera to match the preview.
-      ctx.save();
+      
+// Draw the camera image without mirroring.
+ctx.drawImage(
+  video,
+  x,
+  y,
+  drawWidth,
+  drawHeight
+);
 
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
-
-      ctx.drawImage(
-        video,
-        x,
-        y,
-        drawWidth,
-        drawHeight
-      );
-
-      ctx.restore();
 
       // Save the photo with its original background.
       capturedBlob = await new Promise(resolve => {
