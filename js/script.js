@@ -1499,6 +1499,8 @@ ctx.drawImage(
           proportioner eller bildens storlek.
           Spara resultatet som en PNG-bild
           med transparent bakgrund.
+          Sen se till att propotionerna på bilden är 941 x 1672.
+          Gör så att det inte finns ett mellanrum längst ner på bilden.
         </div>
 
         <button
