@@ -1747,3 +1747,77 @@ ctx.drawImage(
     if (!document.hidden) checkCurrentAccount();
   });
 })();
+
+/* BLY - AUTOMATIC AGE CALCULATION */
+
+(() => {
+  function updateAge() {
+    const numberElement = document.querySelector('.number');
+    const ageElement = document.querySelector('.age');
+
+    if (!numberElement || !ageElement) return;
+
+    const number = numberElement.textContent.trim();
+    const match = number.match(/^(\d{2})(\d{2})(\d{2})/);
+
+    if (!match) {
+      ageElement.textContent = '–';
+      return;
+    }
+
+    const yy = Number(match[1]);
+    const mm = Number(match[2]);
+    const dd = Number(match[3]);
+
+    // 00-25 = 2000-2025
+    // 26-99 = 1926-1999
+    const year = yy <= 25 ? 2000 + yy : 1900 + yy;
+
+    const birthDate = new Date(year, mm - 1, dd);
+    const today = new Date();
+
+    const valid =
+      birthDate.getFullYear() === year &&
+      birthDate.getMonth() === mm - 1 &&
+      birthDate.getDate() === dd &&
+      birthDate <= today;
+
+    if (!valid) {
+      ageElement.textContent = '–';
+      return;
+    }
+
+    let age = today.getFullYear() - year;
+
+    if (
+      today.getMonth() + 1 < mm ||
+      (today.getMonth() + 1 === mm && today.getDate() < dd)
+    ) {
+      age--;
+    }
+
+    ageElement.textContent = age;
+  }
+
+  function initializeAge() {
+    updateAge();
+
+    const numberElement = document.querySelector('.number');
+
+    if (numberElement) {
+      const observer = new MutationObserver(updateAge);
+
+      observer.observe(numberElement, {
+        childList: true,
+        characterData: true,
+        subtree: true
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAge);
+  } else {
+    initializeAge();
+  }
+})();
