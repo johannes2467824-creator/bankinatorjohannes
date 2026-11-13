@@ -599,7 +599,7 @@ function generateRandomCode() {
   ).join('').toUpperCase();
 
   return (
-    'https://johannes2467824-creator.github.io/verification/?code=' +
+    'https://youtube.com' +
     randomCode
   );
 }
