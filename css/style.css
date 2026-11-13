@@ -232,7 +232,7 @@ button:focus-visible { outline: 3px solid #56d8d4; outline-offset: 4px; }
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1.3;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   background: transparent !important;
   border: none;
