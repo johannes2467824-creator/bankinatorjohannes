@@ -1429,7 +1429,7 @@ ctx.drawImage(
         </p>
 
         <p>
-          Titta rakt in i kameran, håll huvudet rakt
+          Titta rakt in i kameran, och ta av kepsar, hattar, glasögon och håll huvudet rakt
           och se till att hela ansiktet syns tydligt.
           Använd gärna bra belysning och undvik
           kraftiga skuggor över ansiktet.
