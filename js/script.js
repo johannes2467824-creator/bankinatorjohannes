@@ -1261,7 +1261,7 @@ setInterval(() => {
 
       const ctx = canvas.getContext('2d');
 
-      const scale = Math.max(
+      const scale = Math.min(
         canvas.width / video.videoWidth,
         canvas.height / video.videoHeight
       );
